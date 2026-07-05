@@ -1,0 +1,22 @@
+[version]
+current = "1.0.4"
+regex = '''
+  (?P<major>\d+)
+  \.
+  (?P<minor>\d+)
+  \.
+  (?P<patch>\d+)
+  (?:-(?P<prerelease>(?:alpha|beta|rc|test)(?:\.?\d+)?))?
+'''
+
+[git]
+message_template = "chore(release): bump application version to {new_version}"
+tag_template = "app-v{new_version}"
+
+[[before_commit]]
+name = "Generate Changelog"
+cmd = "python3 scripts/build/update-changelog.py --version {new_version} --changelog CHANGELOG.md"
+
+[[file]]
+src = "package.json"
+search = '"version": "{current_version}"'

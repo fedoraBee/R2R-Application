@@ -1,0 +1,36 @@
+# markdownlint configuration
+# Disable line length rule (MD013) because Prettier handles formatting and we want to allow long URLs/tables
+MD013: false
+
+# Disable inline HTML rule (MD033) because docs likely use MDX/React components (e.g. <Card>, <Frame>)
+MD033: false
+
+# Disable first line must be a top-level heading (MD041)
+MD041: false
+
+# Disable language specification for fenced code blocks (MD040)
+MD040: false
+
+# Disable alternate text for images (MD045)
+MD045: false
+
+# Disable emphasis used instead of a heading (MD036)
+MD036: false
+
+# Disable link fragments validation (MD051)
+MD051: false
+
+# Disable multiple headings with the same content (MD024)
+MD024: false
+
+# Disable descriptive link text validation (MD059)
+MD059: false
+
+# Disable strict code block style enforcement (MD046)
+MD046: false
+
+# Disable heading increment validation (MD001)
+MD001: false
+
+# Disable blank line inside blockquote validation (MD028)
+MD028: false
