@@ -7,7 +7,6 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 import { brandingConfig } from '@/config/brandingConfig';
 import { UserProvider, useUserContext } from '@/context/UserContext';
 import '@/styles/globals.css';
-import { initializePostHog } from '@/lib/posthog-client';
 
 function MyAppContent({ Component, pageProps }: AppProps) {
   const { setTheme } = useTheme();
@@ -16,7 +15,6 @@ function MyAppContent({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     setTheme(brandingConfig.theme);
-    initializePostHog();
   }, []);
 
   const checkAccess = useCallback(async () => {

@@ -36,7 +36,7 @@ const SingleSwitch: React.FC<SingleSwitchProps> = ({
       )}
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger>
+          <TooltipTrigger asChild>
             <Switch
               id={id}
               checked={isChecked}

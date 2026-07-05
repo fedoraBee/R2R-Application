@@ -286,6 +286,10 @@ export const Result: FC<{
 
           const jsonStr = dataLine.slice(6);
 
+          if (jsonStr.trim() === '[DONE]') {
+            continue;
+          }
+
           try {
             const eventData = JSON.parse(jsonStr);
 
@@ -354,11 +358,13 @@ export const Result: FC<{
 
       // Save the assistant's message to the conversation
       try {
-        await client.conversations.addMessage({
-          id: currentConversationId,
-          role: 'assistant',
-          content: fullContent,
-        });
+        if (fullContent.trim() !== '') {
+          await client.conversations.addMessage({
+            id: currentConversationId,
+            role: 'assistant',
+            content: fullContent,
+          });
+        }
       } catch (error) {
         console.error('Error adding assistant message to conversation:', error);
       }

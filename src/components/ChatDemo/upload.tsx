@@ -118,9 +118,11 @@ export const UploadButton: React.FC<UploadButtonProps> = ({
       metadata: { ...chunk.metadata, ...metadata },
     }));
 
-    client.chunks
+    client.documents
       .create({
-        chunks: processedChunks,
+        chunks: chunks.map((chunk) => chunk.text),
+        id: documentId,
+        metadata: metadata,
       })
       .catch((error) => {
         showToast({

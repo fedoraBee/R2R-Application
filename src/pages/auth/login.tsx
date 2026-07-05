@@ -36,7 +36,7 @@ const LoginPage: React.FC = () => {
     ) {
       return window.__RUNTIME_CONFIG__.NEXT_PUBLIC_R2R_DEPLOYMENT_URL;
     }
-    return '';
+    return process.env.NEXT_PUBLIC_R2R_DEPLOYMENT_URL || '';
   };
 
   useEffect(() => {
@@ -45,27 +45,28 @@ const LoginPage: React.FC = () => {
       setRawDeploymentUrl(url);
       setSanitizedDeploymentUrl(url);
 
-      if (window.__RUNTIME_CONFIG__) {
-        if (
-          window.__RUNTIME_CONFIG__.NEXT_PUBLIC_R2R_DEFAULT_EMAIL &&
-          !window.__RUNTIME_CONFIG__.NEXT_PUBLIC_R2R_DEFAULT_EMAIL.includes(
-            '__NEXT_PUBLIC_R2R_DEFAULT_EMAIL__'
-          )
-        ) {
-          setEmail(window.__RUNTIME_CONFIG__.NEXT_PUBLIC_R2R_DEFAULT_EMAIL);
-        }
-
-        if (
-          window.__RUNTIME_CONFIG__.NEXT_PUBLIC_R2R_DEFAULT_PASSWORD &&
-          !window.__RUNTIME_CONFIG__.NEXT_PUBLIC_R2R_DEFAULT_PASSWORD.includes(
-            '__NEXT_PUBLIC_R2R_DEFAULT_PASSWORD__'
-          )
-        ) {
-          setPassword(
-            window.__RUNTIME_CONFIG__.NEXT_PUBLIC_R2R_DEFAULT_PASSWORD
-          );
-        }
+      let defaultEmail = process.env.NEXT_PUBLIC_R2R_DEFAULT_EMAIL || '';
+      if (
+        window.__RUNTIME_CONFIG__?.NEXT_PUBLIC_R2R_DEFAULT_EMAIL &&
+        !window.__RUNTIME_CONFIG__.NEXT_PUBLIC_R2R_DEFAULT_EMAIL.includes(
+          '__NEXT_PUBLIC_R2R_DEFAULT_EMAIL__'
+        )
+      ) {
+        defaultEmail = window.__RUNTIME_CONFIG__.NEXT_PUBLIC_R2R_DEFAULT_EMAIL;
       }
+      if (defaultEmail) setEmail(defaultEmail);
+
+      let defaultPassword = process.env.NEXT_PUBLIC_R2R_DEFAULT_PASSWORD || '';
+      if (
+        window.__RUNTIME_CONFIG__?.NEXT_PUBLIC_R2R_DEFAULT_PASSWORD &&
+        !window.__RUNTIME_CONFIG__.NEXT_PUBLIC_R2R_DEFAULT_PASSWORD.includes(
+          '__NEXT_PUBLIC_R2R_DEFAULT_PASSWORD__'
+        )
+      ) {
+        defaultPassword =
+          window.__RUNTIME_CONFIG__.NEXT_PUBLIC_R2R_DEFAULT_PASSWORD;
+      }
+      if (defaultPassword) setPassword(defaultPassword);
     }
   }, []);
 
@@ -162,15 +163,9 @@ const LoginPage: React.FC = () => {
 
   // URL sanitization function
   const sanitizeUrl = (url: string): string => {
-    if (
-      typeof window !== 'undefined' &&
-      window.__RUNTIME_CONFIG__?.NEXT_PUBLIC_R2R_DEPLOYMENT_URL
-    ) {
-      const configUrl =
-        window.__RUNTIME_CONFIG__.NEXT_PUBLIC_R2R_DEPLOYMENT_URL;
-      if (!url || url === 'http://' || url === 'https://') {
-        return configUrl;
-      }
+    const configUrl = getDeploymentUrl();
+    if (configUrl && (!url || url === 'http://' || url === 'https://')) {
+      return configUrl;
     }
 
     if (!url || url === 'http://' || url === 'https://') {
